@@ -1,25 +1,14 @@
 import Groq from 'groq-sdk';
 
-export async function createChatCompletion(
-  messageType: string,
-  message: string
-) {
+export async function createChatCompletion(message: string) {
   const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
   return await groq.chat.completions.create({
     messages: [
       {
         role: 'user',
         content: `
-          ${
-            messageType === 'response'
-              ? `
-             - Convert the data to json format, no explanation, no verbosity, do not describe anything, please.
-            `
-              : `
-          - Run the message in between the dollar signs '$' as a sql query, if it's valid, convert the sql query to postgresql query, and return the query as it is, unenclosed.
-          - If it throws an error, return an empty string.`
-          }
-          
+          - Convert every sql query to postgresql query, and return that in an unenclosed format. No chatting, no describing, no notation, no explanation to the user. Do nothing else.
+          - If it is not a query, you are free to chat with the user like a very knowledgable professor. Your name is Treb Legne. Introduce yourself if they say hi, otherwise just chat casually. Return values should be in text format without using word formatting or escape sequences like forward slashes in your text. Stop using forward slash n in your sentences, please!
           $ 
           ${message}
           $

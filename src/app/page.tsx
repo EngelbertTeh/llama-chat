@@ -46,7 +46,7 @@ export default function ChatPage() {
       });
 
       const { data, error } = await response.json();
-
+      console.log('DATA IS ', data);
       if (!error) {
         const botMessage: Message = {
           id: Date.now() + 1,
