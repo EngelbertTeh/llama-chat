@@ -82,6 +82,9 @@ export default function ChatPage() {
         <h1 className="text-2xl font-semibold text-gray-800">
           Virtual Query Interface
         </h1>
+        <h3 className="text-slate-400">
+          https://github.com/EngelbertTeh/llama-chat.git
+        </h3>
       </header>
 
       {/* Chat Box */}
@@ -116,7 +119,13 @@ export default function ChatPage() {
         )}
         <div ref={messagesEndRef} />
       </div>
-
+      <h3 className="text-slate-700">
+        {' '}
+        &nbsp;{' '}
+        {`P.S. If I am returning you the same query you have written, then
+              probably your query isn't quite correct (check for spelling mistakes and try using postgresql
+              dialect instead :D )`}
+      </h3>
       {/* Input Box */}
       <form
         className="flex items-center p-4 bg-white border-t border-gray-300"
