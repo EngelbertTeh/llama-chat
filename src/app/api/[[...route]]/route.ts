@@ -18,14 +18,22 @@ app.post('/chat', async (c) => {
       );
     }
 
-    const chatCompletion = await createChatCompletion(message);
+    // const chatCompletion = await createChatCompletion('response', message);
 
-    const responseMessage =
+    // const chatbotResponse =
+    //   chatCompletion.choices[0]?.message?.content || 'No response from llama.';
+    // console.log('chatbotREsponse is ', chatbotResponse);
+    const rows = await proceduralCall(message);
+    const chatCompletion = await createChatCompletion(
+      'response',
+      JSON.stringify(rows)
+    );
+    const chatbotResponse =
       chatCompletion.choices[0]?.message?.content || 'No response from llama.';
 
-    console.log(proceduralCall());
+    const jsonObjArr = JSON.parse(chatbotResponse);
 
-    return NextResponse.json({ response: responseMessage });
+    return NextResponse.json({ data: jsonObjArr, error: null });
   } catch (e) {
     console.error('Error in chat API:', e);
     return NextResponse.json(

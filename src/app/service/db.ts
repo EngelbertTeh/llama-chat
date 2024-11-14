@@ -1,6 +1,7 @@
-import postgres from 'postgres';
+// import postgres from 'postgres';
 
-const sql = postgres({
-}); // will use psql environment variables
+// const sql = postgres({
+// }); // will use psql environment variables
 
-export default sql;
+// export default sql;
+

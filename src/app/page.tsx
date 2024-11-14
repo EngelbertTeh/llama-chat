@@ -36,8 +36,6 @@ export default function ChatPage() {
     setInput('');
     setLoading(true);
 
-
-
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -47,13 +45,13 @@ export default function ChatPage() {
         body: JSON.stringify({ message: userMessage.text }),
       });
 
-      const data = await response.json();
+      const { data, error } = await response.json();
 
-      if (response.ok) {
+      if (!error) {
         const botMessage: Message = {
           id: Date.now() + 1,
           sender: 'bot',
-          text: data.response,
+          text: JSON.stringify(data),
         };
         setMessages((prev) => [...prev, botMessage]);
       } else {
