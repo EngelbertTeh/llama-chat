@@ -100,11 +100,11 @@ export default function ChatPage() {
   return (
     <SidebarProvider defaultOpen={false}>
       <SchemaViewer />
-      <main className="flex">
+      <main className="flex w-full h-full">
         <div className="flex justify-center items-center max-w-[50px] bg-white border-none">
-          <SidebarTrigger className="text-slate-700" />
+          <SidebarTrigger className="text-slate-800" />
         </div>
-        <div className="flex flex-col h-screen bg-gray-100">
+        <div className="flex flex-col h-screen bg-gray-100 flex-grow">
           {/* Header */}
           <header className="bg-white shadow px-4 py-4">
             <h1 className="text-2xl font-semibold text-gray-800">

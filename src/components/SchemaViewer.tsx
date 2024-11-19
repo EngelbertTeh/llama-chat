@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
+import { Calendar, Inbox, Search, Settings } from 'lucide-react';
 
 import {
   Sidebar,
@@ -7,16 +7,12 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
 // Menu items.
 const items = [
   {
     title: 'Home',
-    url: '#',
-    icon: Home,
   },
   {
     title: 'Inbox',
@@ -42,23 +38,18 @@ const items = [
 
 export function SchemaViewer() {
   return (
-    <Sidebar className="bg-gradient-to-r from-white to-slate-300/50">
+    <Sidebar className="bg-gradient-to-r from-white to-slate-200/50">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="!text-black">
-            Application
+          <SidebarGroupLabel className="mt-8 mb-4 !text-slate-800  flex justify-center  text-xl tracking-widest text-nowrap">
+            Database Schema
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <div className="bg-white rounded-xl m-4 text-white w-full min-h-[250px]">
+                  hi
+                </div>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
