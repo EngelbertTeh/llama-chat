@@ -56,24 +56,19 @@ export default function ChatPage() {
       });
 
       const { data, error } = await response.json();
-      console.log('DATA IS ', data.rows);
-      console.log('Erorr is ', error);
-      console.log('QUERIES IS', queries.join(', '));
       if (!error) {
         const botMessage: Message = {
           id: Date.now() + 1,
           sender: 'bot',
           text: JSON.stringify(data.isSql ? data.rows : data.chatResponse),
         };
-        console.log('data chatresponse is', data.chatResponse);
-        console.log('data suggested query is', data.suggestedQuery);
-        if (data.isSql) {
-          if (data.chatResponse) {
-            addQuery(`${queries.length + 1}: ${data.chatResponse}`);
-          }
-        } else if (data.suggestedQuery) {
-          addQuery(`${queries.length + 1}: ${data.suggestedQuery}`);
+        console.log('is rerun value  page ', data.isRerun);
+        if (data.isSql && data.chatResponse && !data.isRerun) {
+          addQuery(`${queries.length + 1}: ${data.chatResponse}`);
         }
+        // else if (data.suggestedQuery) {
+        //   addQuery(`${queries.length + 1}: ${data.suggestedQuery}`);
+        // }
 
         setMessages((prev) => [...prev, botMessage]);
       } else {

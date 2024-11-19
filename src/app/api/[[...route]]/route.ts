@@ -18,7 +18,7 @@ app.post('/chat', async (c) => {
       );
     }
 
-    const { chatResponse, suggestedQuery, isSql } = await generateChatResponse(
+    const { chatResponse, isRerun, isSql } = await generateChatResponse(
       message
     );
 
@@ -27,7 +27,7 @@ app.post('/chat', async (c) => {
       try {
         const rows = await proceduralCall(chatResponse);
         return NextResponse.json({
-          data: { chatResponse, rows, isSql, suggestedQuery : '' },
+          data: { chatResponse, rows, isSql, isRerun },
           error: null,
         });
       } catch (e) {
@@ -36,15 +36,15 @@ app.post('/chat', async (c) => {
       }
     } else {
       return NextResponse.json({
-        data: { chatResponse, rows: [], suggestedQuery, isSql },
+        data: { chatResponse, rows: [], isRerun, isSql },
         error: null,
       });
     }
   } catch (e) {
-    console.error('Error in chat API:', e);
     return NextResponse.json(
       {
-        error: 'An error occured while processing your request',
+        message: 'An error occured while processing your request',
+        error: e,
       },
       { status: 500 }
     );
