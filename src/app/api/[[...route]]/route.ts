@@ -1,5 +1,5 @@
 import { proceduralCall } from '@/app/service/(dao)/db-service';
-import { createChatCompletion } from '@/app/service/chat-service';
+import { generateChatResponse } from '@/app/service/chat-service';
 import { Hono } from 'hono';
 import { handle } from 'hono/vercel';
 import { NextResponse } from 'next/server';
@@ -18,17 +18,27 @@ app.post('/chat', async (c) => {
       );
     }
 
-    const chatCompletion = await createChatCompletion(message);
+    const { chatResponse, suggestedQuery, isSql } = await generateChatResponse(
+      message
+    );
 
-    const chatbotResponse =
-      chatCompletion.choices[0]?.message?.content || 'No response from llama.';
-
-    try {
-      const rows = await proceduralCall(chatbotResponse);
-      return NextResponse.json({ data: rows, error: null });
-    } catch (e) {
-      console.log('Error in sql response: ', e);
-      return NextResponse.json({ data: chatbotResponse, error: null });
+    console.log('chat response is', chatResponse);
+    if (isSql) {
+      try {
+        const rows = await proceduralCall(chatResponse);
+        return NextResponse.json({
+          data: { chatResponse, rows, isSql, suggestedQuery : '' },
+          error: null,
+        });
+      } catch (e) {
+        console.error(e);
+        return NextResponse.json({ data: 'Incorrect sql syntax.', error: e });
+      }
+    } else {
+      return NextResponse.json({
+        data: { chatResponse, rows: [], suggestedQuery, isSql },
+        error: null,
+      });
     }
   } catch (e) {
     console.error('Error in chat API:', e);

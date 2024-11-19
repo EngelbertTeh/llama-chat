@@ -1,7 +1,7 @@
 'use client';
 
+import useChatDataStore from '@/store/useChatDataStore';
 import { FormEvent, useEffect, useRef, useState } from 'react';
-
 type Message = {
   id: number;
   sender: 'user' | 'bot';
@@ -13,6 +13,7 @@ export default function ChatPage() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { queries, addQuery } = useChatDataStore();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -42,23 +43,40 @@ export default function ChatPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userMessage.text }),
+        body: JSON.stringify({
+          message:
+            '$' + userMessage.text + '$' +
+            ' ' +
+            'Following this is the user query history, or the queries the user previously wrote, return only the query to users when asked and prefix the query with "sql:" (Refer Rule 1a) - the queries history are as follows: ' +
+            queries.join(',') }),
       });
 
       const { data, error } = await response.json();
-      console.log('DATA IS ', data);
+      console.log('DATA IS ', data.rows);
+      console.log('Erorr is ', error);
+      console.log('QUERIES IS', queries.join(', '));
       if (!error) {
         const botMessage: Message = {
           id: Date.now() + 1,
           sender: 'bot',
-          text: JSON.stringify(data),
+          text: JSON.stringify(data.isSql ? data.rows : data.chatResponse),
         };
+        console.log('data chatresponse is', data.chatResponse);
+        console.log('data suggested query is', data.suggestedQuery);
+        if (data.isSql) {
+          if (data.chatResponse) {
+              addQuery(`${queries.length + 1}: ${data.chatResponse}`);
+          }
+      } else if (data.suggestedQuery) {
+          addQuery(`${queries.length + 1}: ${data.suggestedQuery}`);
+      }
+      
         setMessages((prev) => [...prev, botMessage]);
       } else {
         const errorMessage: Message = {
           id: Date.now() + 1,
           sender: 'bot',
-          text: data.error || 'Something went wrong',
+          text: error || 'Something went wrong',
         };
         setMessages((prev) => [...prev, errorMessage]);
       }
@@ -103,7 +121,9 @@ export default function ChatPage() {
                   : 'bg-gray-200 text-gray-800'
               }`}
             >
-              {msg.text}
+              {
+              typeof msg.text === 'string' ? msg.text
+              : 'An error has occurred, please try with a new prompt'}
             </div>
           </div>
         ))}
@@ -119,13 +139,13 @@ export default function ChatPage() {
         )}
         <div ref={messagesEndRef} />
       </div>
-      <h3 className="text-slate-700">
+      {/* <h3 className="text-slate-700">
         {' '}
         &nbsp;{' '}
         {`P.S. If I am returning you the same query you have written, then
               probably your query isn't quite correct (check for spelling mistakes and try using postgresql
               dialect instead :D )`}
-      </h3>
+      </h3> */}
       {/* Input Box */}
       <form
         className="flex items-center p-4 bg-white border-t border-gray-300"
