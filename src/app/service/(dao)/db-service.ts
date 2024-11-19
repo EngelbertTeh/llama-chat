@@ -24,9 +24,7 @@ export async function proceduralCall(message: string) {
   });
 
   const client = await pool.connect();
-  console.log('message in db service???:', message);
   const response = await client.query(message);
-  console.log('response:', response.rows);
   client.release();
   return response.rows;
 }

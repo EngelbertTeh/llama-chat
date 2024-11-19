@@ -3,6 +3,7 @@
 Table Name: Employee 
 Column Names: EmpID (Employee ID), Emp_name (Employee Name), Manager_id (Manager ID), Salary (Employee Salary), Location (Employee Location)
 
+select *, round(avg(salary) over (partition by location),2) as "Average Salary Per Region" from employee order by case when location = 'Singapore' then 1 when location = 'India' then 2 else 3 end, salary desc
 ---
 
 2. Write a SQL query to identify riders who have taken at least one trip every day for the last 10 days.

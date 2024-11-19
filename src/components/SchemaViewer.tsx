@@ -1,3 +1,4 @@
+'use client';
 import { Calendar, Inbox, Search, Settings } from 'lucide-react';
 
 import {
@@ -36,7 +37,9 @@ const items = [
   },
 ];
 
-export function SchemaViewer() {
+export  function SchemaViewer() {
+
+
   return (
     <Sidebar className="bg-gradient-to-r from-white to-slate-200/50">
       <SidebarContent>
@@ -47,8 +50,9 @@ export function SchemaViewer() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <div className="bg-white rounded-xl m-4 text-white w-full min-h-[250px]">
-                  hi
+                <div 
+                key={Math.random()} className="bg-white rounded-xl m-4 text-white w-full min-h-[250px]">
+                  {item.title}
                 </div>
               ))}
             </SidebarMenu>
