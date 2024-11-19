@@ -98,11 +98,11 @@ export default function ChatPage() {
   };
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <SchemaViewer />
       <main className="flex">
-        <div className="flex justify-center items-center max-w-[50px] ">
-          <SidebarTrigger />
+        <div className="flex justify-center items-center max-w-[50px] bg-white border-none">
+          <SidebarTrigger className="text-slate-700" />
         </div>
         <div className="flex flex-col h-screen bg-gray-100">
           {/* Header */}

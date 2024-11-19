@@ -42,10 +42,12 @@ const items = [
 
 export function SchemaViewer() {
   return (
-    <Sidebar>
+    <Sidebar className="bg-gradient-to-r from-white to-slate-300/50">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="!text-black">
+            Application
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
