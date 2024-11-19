@@ -18,7 +18,7 @@ const useStore = create<{
       return { queries };
     }),
   isSuperUser: false,
-  setIsSuperUser: (bool) => set((state) => ({ isSuperUser: bool })),
+  setIsSuperUser: (bool) => set(() => ({ isSuperUser: bool })),
 }));
 
 export default useStore;
